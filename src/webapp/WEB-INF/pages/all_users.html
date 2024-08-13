@@ -17,12 +17,12 @@
   <tr th:each="user : ${users}">
     <td th:text="${user.id}"></td>
     <td th:text="${user.firstName}"></td>
-    <td th:text="${user.lastName}"></td>
+    <td th:text="${user.lastname}"></td>
     <td th:text="${user.email}"></td>
     <td>
-      <a th:href="@{/user/show(id=${user.id})}">View</a>
-      <a th:href="@{/user/show/edit(id=${user.id})}">Edit</a>
-      <form th:action="@{/user/show/delete(id=${user.id})}" method="post" style="display:inline;">
+      <a th:href="@{/user/{id}(id=${user.id})}">View</a>
+      <a th:href="@{/user/{id}/edit(id=${user.id})}">Edit</a>
+      <form th:action="@{/user/{id}/delete(id=${user.id})}" method="post" style="display:inline;">
         <button type="submit">Delete</button>
       </form>
     </td>
@@ -30,4 +30,3 @@
 </table>
 </body>
 </html>
-
