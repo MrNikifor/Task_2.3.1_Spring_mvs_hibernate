@@ -7,7 +7,7 @@
 <h1>User Information</h1>
 <p>Id: <span th:text="${user.id}"></span></p>
 <p>Name: <span th:text="${user.firstName}"></span></p>
-<p>Surname: <span th:text="${user.lastname}"></span></p>
+<p>Surname: <span th:text="${user.lastName}"></span></p>
 <p>Email: <span th:text="${user.email}"></span></p>
 <a th:href="@{/user/show/edit(id=${user.id})}">Edit</a>
 <form th:action="@{/user/show/delete(id=${user.id})}" method="post" style="display:inline;">

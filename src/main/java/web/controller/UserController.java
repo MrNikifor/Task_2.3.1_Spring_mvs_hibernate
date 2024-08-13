@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import web.exeption.UserNotFoundException;
 import web.model.User;
 import web.service.UserService;
 import web.service.UserServiceImpl;
@@ -37,35 +38,47 @@ public class UserController {
     @PostMapping()
     public String addUser(@ModelAttribute("user") User user) {
         userService.saveUser(user.getFirstName(), user.getLastName(), user.getEmail());
-        return "redirect:/add_user";
+        return "redirect:/user";
     }
 
     @GetMapping("/show")
     public String showUserById(@RequestParam("id") int id, Model model) {
-        User user = userService.showUserById(id);
-        if (user == null) {
-            return "redirect:/all_user";
-        } else {
+        try {
+            User user = userService.showUserById(id);
             model.addAttribute("user", user);
             return "selected_user";
+        } catch (UserNotFoundException e) {
+            return "redirect:/error_page";
         }
     }
 
     @GetMapping("/show/edit")
     public String editUser(Model model, @RequestParam("id") int id) {
-        model.addAttribute("user", userService.showUserById(id));
-        return "edit_user";
+        try {
+            model.addAttribute("user", userService.showUserById(id));
+            return "edit_user";
+        } catch (UserNotFoundException e) {
+            return "redirect:/error_page";
+        }
     }
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user, @RequestParam("id") int id) {
-        userService.updateUserById(id, user);
-        return "redirect:/all_user";
+        try {
+            userService.updateUserById(id, user);
+            return "redirect:/user";
+        } catch (UserNotFoundException e) {
+            return "redirect:/error_page";
+        }
     }
 
     @PostMapping("/show/delete")
-    public String deleteUser(@ModelAttribute("user") User user, @RequestParam("id") int id) {
-        userService.removeUserById(id);
-        return "redirect:/all_user";
+    public String deleteUser(@RequestParam("id") int id) {
+        try {
+            userService.removeUserById(id);
+            return "redirect:/user";
+        } catch (UserNotFoundException e) {
+            return "redirect:/error_page";
+        }
     }
 }
